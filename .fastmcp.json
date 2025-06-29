@@ -1,6 +1,7 @@
 {
     "name": "jasonshen190.my-mcp-server",
-    "version": "0.0.3",
+    "version": "0.0.5",
+    "branch": "dev",
     "entry": "src/demo_server.py",
     "runtime": "python3",
     "files": ["src/", "src/components/", "requirements.txt"]

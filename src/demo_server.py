@@ -4,14 +4,14 @@ A comprehensive example showing tools, resources, and prompts
 """
 
 from mcp.server.fastmcp import FastMCP
-from components.tools import (
+from src.components.tools import (
     add_numbers, multiply_numbers, calculate_bmi, 
     get_weather, format_text, get_current_time, WeatherData
 )
-from components.resources import (
+from src.components.resources import (
     get_app_config, get_greeting, get_server_info, get_math_constants
 )
-from components.prompts import (
+from src.components.prompts import (
     calculator_assistant, weather_assistant, text_formatter
 )
 
@@ -109,7 +109,11 @@ def text_formatter_prompt() -> str:
     return text_formatter()
 
 
-if __name__ == "__main__":
+def main():
     # Run the server on HTTP at 127.0.0.1:8000
     # mcp.run(transport="streamable-http")
+    print("Starting MCP server...")
     mcp.run()
+
+if __name__ == "__main__":
+    main()
