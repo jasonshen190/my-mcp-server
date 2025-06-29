@@ -1,7 +1,23 @@
 {
   "mcpServers": {
     "my-mcp-server": {
-      "url": "http://127.0.0.1:8000/mcp"
+      "command": "/Users/jasonshen/.local/bin/uvx",
+      "args": ["git+https://github.com/jasonshen190/my-mcp-server.git@main"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "INFO"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "awslabs.aws-documentation-mcp-server": {
+      "command": "/Users/jasonshen/.local/bin/uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_DOCUMENTATION_PARTITION": "aws"
+      },
+      "disabled": false,
+      "autoApprove": []
     }
   }
 }
