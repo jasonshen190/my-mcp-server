@@ -1,2 +1,0 @@
-[console_scripts]
-my-mcp-server = src.demo_server:main
