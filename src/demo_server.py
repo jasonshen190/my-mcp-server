@@ -111,4 +111,5 @@ def text_formatter_prompt() -> str:
 
 if __name__ == "__main__":
     # Run the server on HTTP at 127.0.0.1:8000
-    mcp.run(transport="streamable-http")
+    # mcp.run(transport="streamable-http")
+    mcp.run()

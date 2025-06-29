@@ -1,7 +1,7 @@
 {
     "name": "jasonshen190.my-mcp-server",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "entry": "src/demo_server.py",
     "runtime": "python3",
-    "files": ["src/", "components/", "requirements.txt"]
+    "files": ["src/", "src/components/", "requirements.txt"]
   }
