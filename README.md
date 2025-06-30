@@ -1,81 +1,68 @@
 # my-mcp-server MCP Server
 
+## Overview
+
+my-mcp-server is a comprehensive example MCP server demonstrating tools, resources, and prompts using the FastMCP framework. It is modular, extensible, and includes structured output, error handling, and async support.
+
+## Local Testing Instructions
+
+If you want to test the server locally after cloning the repository or downloading and unzipping the package:
+
+1. Open `src/demo_server.py` and go to lines 114 and 115.
+1. Comment the mcp.run()
+1. Uncomment or update these lines to enable the `streamable-http` mode:
+   ```python
+   # mcp.run(transport="streamable-http")
+   # print("Starting MCP server...")
+   mcp.run(transport="streamable-http")
+   ```
+1. run by following [Testing with the Client](#testing-with-the-client)
+1. To test with IDEs like Cursor, use the contents in mcp-local.json in ~/.cursor/mcp.json(restart Cursor might be needed)
+
+## Test with Remote(uvx)
+
+1. Instead of run the demo_server.py locally, use mcp.json in ~/.cursor/mcp.json to use it as remote MCP server
+
+## Project Structure
+
+```
+my-mcp-server/
+├── src/
+│   ├── demo_server.py         # Main MCP server with tool/resource/prompt registration
+│   ├── setup_and_run.py      # Interactive setup and run script
+│   ├── test_client.py        # Async test client for all features
+|   |── mcp-local.json        # local test server configuration
+│   ├── mcp.json              # Server configuration
+│   └── components/
+│       ├── tools.py          # Tool logic and models
+│       ├── resources.py      # Resource logic
+│       ├── prompts.py        # Prompt logic
+│       └── __init__.py
+├── requirements.txt
+├── pyproject.toml
+├── README.md
+```
+
 ## Usage
 
-### Running the Server
-
-By default, the server runs on HTTP at 127.0.0.1:8000.
+### Testing the Server locally
 
 #### Method 1: Direct execution
 ```bash
-python demo_server.py
+python src/demo_server.py
 ```
 
-#### Method 2: Using MCP CLI
-```bash
-mcp run demo_server.py
-```
 
-#### Method 3: Development mode with MCP Inspector
+#### Method 2: Interactive Setup (Recommended)
 ```bash
-mcp dev demo_server.py
-```
-
-#### Method 4: Install in Claude Desktop
-```bash
-mcp install demo_server.py
-```
-
-#### Method 5: Interactive Setup (Recommended)
-```bash
-python setup_and_run.py
+python src/setup_and_run.py
 ```
 
 ### Testing with the Client
 
 Run the test client to see all features in action:
 ```bash
-python test_client.py
-```
-
-This will:
-1. Connect to the server
-2. Test all available tools
-3. Test all available resources
-4. Test all available prompts
-5. Display the results
-
-## Features
-
-### Tools
-- **add_numbers_tool**: Add two integers
-- **multiply_numbers_tool**: Multiply two floating-point numbers
-- **calculate_bmi_tool**: Calculate BMI given weight and height
-- **get_weather_tool**: Get simulated weather data for cities (with structured output)
-- **format_text_tool**: Format text in different styles (uppercase, lowercase, title, reverse)
-- **get_current_time_tool**: Get current time in specified timezone
-
-### Resources
-- **config://app**: Application configuration
-- **greeting://{name}**: Personalized greeting
-- **info://server**: Server information and capabilities
-- **math://constants**: Common mathematical constants
-
-### Prompts
-- **calculator_assistant_prompt**: Assistant for mathematical calculations
-- **weather_assistant_prompt**: Assistant for weather-related queries
-- **text_formatter_prompt**: Assistant for text formatting
-
-## Installation
-
-1. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-Or use the interactive setup script:
-```bash
-python setup_and_run.py
+python src/test_client.py
 ```
 
 ## Example Output
@@ -131,56 +118,51 @@ Please help users with their calculations!
 All tests completed successfully!
 ```
 
+## Features
+
+### Tools
+- **add_numbers_tool(a, b)**: Add two numbers (int)
+- **multiply_numbers_tool(a, b)**: Multiply two numbers (float)
+- **calculate_bmi_tool(weight_kg, height_m)**: Calculate BMI given weight (kg) and height (m)
+- **get_weather_tool(city)**: Get simulated weather data for a city (returns structured WeatherData)
+- **format_text_tool(text, style)**: Format text in different styles (uppercase, lowercase, title, reverse, normal)
+- **get_current_time_tool(timezone)**: Get the current time in the specified timezone (default: UTC)
+
+### Resources
+- **config://app**: Application configuration (name, version, features, status)
+- **greeting://{name}**: Personalized greeting
+- **info://server**: Server information and available features
+- **math://constants**: Common mathematical constants (pi, e, golden_ratio, sqrt_2)
+
+### Prompts
+- **calculator_assistant_prompt**: Assistant for mathematical calculations
+- **weather_assistant_prompt**: Assistant for weather-related queries
+- **text_formatter_prompt**: Assistant for text formatting
+
+## Main Files
+
+- **src/demo_server.py**: Registers all tools, resources, and prompts with FastMCP. Entry point for running the server.
+- **src/setup_and_run.py**: Installs dependencies and interactively runs the server or test client.
+- **src/test_client.py**: Async client that tests all tools, resources, and prompts via HTTP.
+- **src/components/tools.py**: Implements tool logic and the WeatherData model.
+- **src/components/resources.py**: Implements resource logic and returns JSON-encoded data.
+- **src/components/prompts.py**: Implements prompt logic for assistants.
+
 ## Advanced Usage
 
-### Structured Output
-
-The `get_weather_tool` demonstrates structured output using Pydantic models. The response includes both human-readable text and machine-readable structured data.
-
-### Error Handling
-
-The server includes basic error handling. For example, the `calculate_bmi_tool` will raise a `ValueError` if the height is not positive.
-
-### Customization
-
-You can easily extend this server by:
-1. Adding new tools with the `@mcp.tool()` decorator
-2. Adding new resources with the `@mcp.resource()` decorator
-3. Adding new prompts with the `@mcp.prompt()` decorator
-4. Creating custom Pydantic models for structured output
-
-## Transport Options
-
-This server supports multiple transport options:
-- **stdio**: Default for direct execution and CLI tools
-- **SSE**: For web-based clients
-- **Streamable HTTP**: For production deployments
-
-## Server Configuration
-
-The server runs on HTTP at `http://127.0.0.1:8000/mcp` and can be configured in `mcp.json`.
+- **Structured Output**: `get_weather_tool` returns a Pydantic model for structured weather data.
+- **Error Handling**: Tools like `calculate_bmi_tool` raise errors for invalid input (e.g., non-positive height).
+- **Customization**: Add new tools/resources/prompts by editing the respective files in `src/components/`.
 
 ## Development
 
-This server uses the FastMCP framework and includes:
+- Modular, decoupled design for easy extension and debugging
 - Pydantic models for type safety
 - Async/await support
 - Comprehensive error handling
-- Example tools, resources, and prompts
-
-## Testing
-
-The included test client demonstrates how to:
-- Connect to the MCP server
-- Call tools with parameters
-- Read resources
-- List and get prompts
-
-Run the test client to see all features in action!
 
 ## Next Steps
 
-1. Explore the [MCP Python SDK documentation](https://modelcontextprotocol.io)
-2. Check out more examples in the `python-sdk/examples/` directory
-3. Build your own MCP server with custom functionality
-4. Integrate with Claude Desktop or other MCP clients
+- Explore the [MCP Python SDK documentation](https://modelcontextprotocol.io)
+- Build your own MCP server with custom functionality
+- Integrate with Claude Desktop or other MCP clients
